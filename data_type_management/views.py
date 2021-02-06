@@ -56,6 +56,5 @@ def delete_all_operations(request):
     return Response({"message": "successfully removed"})
 
 
-
 # lsof -nP -iTCP -sTCP:LISTEN | grep 8000 # list active ports pid in MAC
 
