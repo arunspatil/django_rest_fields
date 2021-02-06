@@ -1,8 +1,6 @@
-invalid = ['', ' ', None]
-create_success_message = ' object created successfully'
-create_failure_message = ' object creation Failed. Please enter valid name'
-
+invalid_strings = ['', None]
+create_success_message = 'operation created successfully'
 delete_success_message = ' object deleted successfully'
-delete_failure_message = ' object not found'
-empty_message = 'Object is not valid. Please enter valid name'
-keyError = "KeyError, Please specify name."
+delete_failure_message = ' object does not exist'
+name_not_valid = 'Please enter valid name'
+something_went_wrong = 'Something went wrong'
