@@ -51,5 +51,5 @@ def delete_all_operations(request):
     Operations.objects.all().delete()
     return Response({"message": "successfully removed"})
 
-# lsof -nP -iTCP -sTCP:LISTEN | grep 8000
+
 
