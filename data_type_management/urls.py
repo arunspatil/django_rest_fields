@@ -9,8 +9,6 @@ from .views import (
 urlpatterns = [
     path(r'get_all_operations/', view=get_all_operations),
     path(r'create_operation/', view=create_operation),
-    path(r'get_all_operation/', view=get_all_operations),
-    path(r'create_operation/', view=create_operations),
     path(r'delete_all_operations/', view=delete_all_operations),
     path(r'delete_operation/', view=delete_operation),
 ]
