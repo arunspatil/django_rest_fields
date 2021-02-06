@@ -1,4 +1,4 @@
-invalid_strings = ['', None]
+invalid_strings = [' ', '', None]
 create_success_message = 'operation created successfully'
 delete_success_message = ' object deleted successfully'
 delete_failure_message = ' object does not exist'
