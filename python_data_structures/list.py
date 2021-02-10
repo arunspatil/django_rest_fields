@@ -2,7 +2,7 @@ from .constants import int_type, invalid_step
 
 
 def create_list():
-    list_data = input().split()
+    list_data = input("enter list items").split()
     return list_data
 
 
@@ -17,7 +17,10 @@ def list_extend(list1, list2):
 
 
 def list_slicing(list_data, start_index, end_index, step):
-    return list_data[start_index:end_index:step]
+    if step:
+        return list_data[start_index:end_index:step]
+    else:
+        return list_data[start_index:end_index]
 
 
 def list_copy(source_list):
