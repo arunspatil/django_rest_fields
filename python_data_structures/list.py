@@ -1,6 +1,16 @@
 from .constants import int_type, invalid_step
 
 
+def is_list(list_data):
+    print('assss')
+    return True if type(list_data) is list else False
+
+
+def is_iterable(list_data):
+    iterables = [int, float, str]
+    return True if type(list_data) in iterables else False
+
+
 def create_list():
     list_data = input("enter list items").split()
     return list_data
@@ -8,6 +18,7 @@ def create_list():
 
 def list_append(list_data, list_item):
     list_data.append(list_item)
+    print(list_data)
     return list_data
 
 
@@ -17,10 +28,8 @@ def list_extend(list1, list2):
 
 
 def list_slicing(list_data, start_index, end_index, step):
-    if step:
-        return list_data[start_index:end_index:step]
-    else:
-        return list_data[start_index:end_index]
+    print(start_index, end_index, step)
+    return list_data[start_index:end_index:step]
 
 
 def list_copy(source_list):
@@ -35,7 +44,7 @@ def list_index(list_data, indexing_item):
     return list_data.index(indexing_item)
 
 
-def list_insert(list_data, item_to_be_inserted, index):
+def list_insert(list_data, index, item_to_be_inserted):
     list_data.insert(index, item_to_be_inserted)
     return list_data
 
@@ -63,7 +72,7 @@ def list_remove(list_data, item_to_be_removed):
     return list_data
 
 
-def clear(list_data):
+def list_clear(list_data):
     list_data.clear()
     return list_data
 
