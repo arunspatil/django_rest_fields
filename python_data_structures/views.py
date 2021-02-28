@@ -4,8 +4,53 @@ from rest_framework import status
 from rest_framework.response import Response
 from .list import *
 from .constants import *
+import requests
+import xml.etree.ElementTree as ET
+from xml.dom import minidom
 
 # Create your views here.
+
+
+@api_view(['POST'])
+def get_address_details(request):
+    address = request.data["address"]
+    address = "+".join(address.split(' '))
+    output_format = request.data["output_format"]
+    api_key = 'AIzaSyCOD3KvY2DDzEfel-NZ_LKIWXr86EF_EUw'
+    address_url = "https://maps.googleapis.com/maps/api/geocode/" + output_format + "?address=" + address + "&key=" + \
+                  api_key
+    response = requests.get(address_url)
+    if output_format == 'json':
+        formatted_address = response.json()['results'][1]['formatted_address']
+        coordinates = response.json()['results'][1]['geometry']['location']
+        return Response(
+            {
+                "coordinates": coordinates,
+                "address": formatted_address
+            }, status=status.HTTP_200_OK)
+    elif output_format == 'xml':
+        # tree = ET.parse(response.text)
+        # print(tree)
+        # root = tree.getroot()
+        tree = ET.fromstring(response.text)
+        formatted_address = tree.find("result").find("formatted_address").text
+        lat = tree.find("result").find("geometry").find("location").find("lat").text
+        lng = tree.find("result").find("geometry").find("location").find("lng").text
+        root = ET.Element("root")
+        ET.SubElement(root, "address").text = formatted_address
+        coordinates = ET.SubElement(root, "coordinates")
+        ET.SubElement(coordinates, "lat").text = lat
+        ET.SubElement(coordinates, "lng", ).text = lng
+        pretty = minidom.parseString(ET.tostring(root)).toprettyxml(indent="    ")
+        return Response(pretty)
+
+
+def is_list(list1):
+    return True if type(list1) is list else False
+
+
+def is_integer(num):
+    return True if type(num) is int else False
 
 
 @api_view(['POST'])
@@ -27,20 +72,26 @@ def list_extend_view(request):
 
 @api_view(['GET'])
 def list_slicing_view(request):
+    start_index_default = 0
+    end_index_default = 0
+    step_default = 1
     try:
         list_data = request.data['list1']
-        start_index = request.data['start_index']
-        end_index = request.data['end_index']
+        start_index = request.data['start_index'] if request.data['start_index'] else start_index_default
+        end_index = request.data['end_index'] if request.data['end_index'] else end_index_default
+        step = request.data['step'] if request.data['step'] else step_default
     except KeyError:
         return Response({"error": something_went_wrong})
-    try:
-        step = request.data['step']
-    finally:
-        if type(start_index) is int_type and type(end_index) is int_type:
-            if type(step) is int_type:
-                Response({'list': list_slicing(list_data, start_index, end_index, step)}, status=status.HTTP_200_OK)
+    if is_list(list_data):
+        start_index_flag = True if is_integer(start_index) else False
+        end_index_flag = True if is_integer(end_index) else False
+        step_flag = True if is_integer(step) else False
+        if start_index_flag and end_index_flag and step_flag:
+            Response({'list': list_slicing(list_data, start_index, end_index, step)}, status=status.HTTP_200_OK)
         else:
             Response({'error': something_went_wrong}, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        Response({'error': something_went_wrong}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])

@@ -17,10 +17,7 @@ def list_extend(list1, list2):
 
 
 def list_slicing(list_data, start_index, end_index, step):
-    if step:
-        return list_data[start_index:end_index:step]
-    else:
-        return list_data[start_index:end_index]
+    return list_data[start_index:end_index:step]
 
 
 def list_copy(source_list):
